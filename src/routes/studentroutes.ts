@@ -7,6 +7,7 @@ Router.get('/getall', async(req:Request,res:Response)=>{
     const result=await getall()
     res.json(result)
 })
+
 Router.get('/getstudentbyid/:id', async(req:Request,res:Response)=>{
    const result = await getStudentById(parseInt(req.params.id));
    res.json(result)
@@ -22,6 +23,7 @@ Router.post('/insertstudent', async(req:Request,res:Response)=>{
        message:result
    })
 })
+
 Router.post('/updatestudent/', async(req:Request,res:Response)=>{
     let result;
    const {id ,update}=req.body

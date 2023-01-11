@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateStudentById = exports.insertstudent = exports.deletestudent = exports.getStudentById = exports.getall = void 0;
+exports.deletestudent = exports.getStudentById = exports.updateStudentById = exports.insertstudent = exports.getall = void 0;
 const sequelize = require('../database/databaseconfig');
 const Student = require('../models/student');
 const getall = function () {
@@ -26,24 +26,13 @@ const getall = function () {
     });
 };
 exports.getall = getall;
-const getStudentById = function (id) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const student = yield Student.findByPk(id);
-        return student.get();
-    });
-};
-exports.getStudentById = getStudentById;
-const deletestudent = function (id) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const result = yield Student.destroy({
-            where: {
-                id: id
-            }
-        });
-        return result;
-    });
-};
-exports.deletestudent = deletestudent;
+// CREATE OR REPLACE FUNCTION get_all_students()
+// RETURNS SETOF students
+// AS $$
+// BEGIN
+// RETURN QUERY SELECT * FROM students;
+// END;
+// $$ LANGUAGE plpgsql;
 const insertstudent = function insertStudent(name, email, password) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -58,6 +47,12 @@ const insertstudent = function insertStudent(name, email, password) {
     });
 };
 exports.insertstudent = insertstudent;
+// CREATE OR REPLACE FUNCTION insert_student(name character varying, email character varying, password character varying)
+// RETURNS VOID AS $$
+// BEGIN
+// INSERT INTO student (name, email, password) VALUES (name, email, password);
+// END;
+// $$ LANGUAGE plpgsql;
 const updateStudentById = (id, updates) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let update;
@@ -76,3 +71,37 @@ const updateStudentById = (id, updates) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.updateStudentById = updateStudentById;
+// CREATE OR REPLACE FUNCTION update_student(IN student_id INTEGER, IN updates JSON)
+// RETURNS TEXT AS $$
+// BEGIN
+// UPDATE student SET
+// name = updates->>'name',
+// email = updates->>'email',
+// password = updates->>'password'
+// WHERE id = student_id;
+// IF FOUND THEN
+// RETURN 'Successfully updated student';
+// ELSE
+// RETURN 'No student found with that id';
+// END IF;
+// END;
+// $$ LANGUAGE plpgsql;
+//sequilize
+const getStudentById = function (id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const student = yield Student.findByPk(id);
+        return student.get();
+    });
+};
+exports.getStudentById = getStudentById;
+const deletestudent = function (id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const result = yield Student.destroy({
+            where: {
+                id: id
+            }
+        });
+        return result;
+    });
+};
+exports.deletestudent = deletestudent;
