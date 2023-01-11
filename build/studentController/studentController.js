@@ -33,16 +33,16 @@ exports.getall = getall;
 // RETURN QUERY SELECT * FROM students;
 // END;
 // $$ LANGUAGE plpgsql;
-const insertstudent = function insertStudent(name, email, password) {
+const insertstudent = function (name, email, password) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const query = 'SELECT insert_student(:name, :email, :password)';
-            const values = { name: name, email: email, password: password };
-            yield sequelize.query(query, { replacements: values });
-            return ({ status: "success", message: "student inserted" });
+            yield sequelize.query("SELECT insert_student(:name, :email, :password)", {
+                replacements: { name: name, email: email, password: password },
+            });
+            return { status: "success", message: "student inserted" };
         }
         catch (error) {
-            return JSON.stringify({ status: "error", message: error.message });
+            return { status: "error", message: error.message };
         }
     });
 };
@@ -58,7 +58,7 @@ const updateStudentById = (id, updates) => __awaiter(void 0, void 0, void 0, fun
         let update;
         if (typeof updates === 'object')
             update = JSON.stringify(updates);
-        const result = yield sequelize.query('SELECT update_student(:studentId, :updates)', {
+        const result = yield sequelize.query("SELECT update_student(:studentId, :updates)", {
             replacements: { studentId: id, updates: update },
             type: sequelize.QueryTypes.SELECT,
         });

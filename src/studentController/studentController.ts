@@ -22,30 +22,26 @@ export const getall=async function (){
 // RETURN QUERY SELECT * FROM students;
 // END;
 // $$ LANGUAGE plpgsql;
-export const insertstudent=async function insertStudent(name:String, email:String, password:String) {
+export const insertstudent = async function (name:string, email:string, password:string) {
   try {
-    const query = 'SELECT insert_student(:name, :email, :password)';
-    const values = { name: name, email: email , password: password};
-    
-    await sequelize.query(query, { replacements: values });
-    return ({ status: "success", message: "student inserted"});
-    
+    await sequelize.query("SELECT insert_student(:name, :email, :password)", {
+      replacements: { name: name, email: email, password: password },
+    });
+    return { status: "success", message: "student inserted" };
   } catch (error:any) {
-    return JSON.stringify({ status: "error", message: error.message });
-  }
-}
+    return { status: "error", message: error.message };
+  }}
 // CREATE OR REPLACE FUNCTION insert_student(name character varying, email character varying, password character varying)
 // RETURNS VOID AS $$
 // BEGIN
 // INSERT INTO student (name, email, password) VALUES (name, email, password);
 // END;
 // $$ LANGUAGE plpgsql;
-export const updateStudentById = async (id:Number, updates:JSON) => {
+export const updateStudentById =  async (id:number, updates:JSON) => {
   try {
     let update;
     if(typeof updates === 'object') update=JSON.stringify(updates);
-    const result = await sequelize.query(
-        'SELECT update_student(:studentId, :updates)',
+    const result = await sequelize.query("SELECT update_student(:studentId, :updates)",
         {
             replacements: { studentId: id, updates: update },
             type: sequelize.QueryTypes.SELECT,
