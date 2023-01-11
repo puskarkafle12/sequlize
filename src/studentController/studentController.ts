@@ -1,13 +1,17 @@
 import { Model, json } from "sequelize";
+const sequelize=require('../database/databaseconfig')
+
 
 const Student=require('../models/student')
-export const getall=async function  (){
- 
-    
-    const students = await Student.findAll();
-    return students
-    
-    
+export const getall=async function (){
+  try {
+  const results = await sequelize.query('SELECT * FROM public.get_all_students()', { type: sequelize.QueryTypes.SELECT });
+  const students =results// JSON.stringify(results);
+  console.log(students);
+  return students;
+} catch (error) {
+  console.error(error);
+}
 }
 
 export const getStudentById=async function  (id:Number){

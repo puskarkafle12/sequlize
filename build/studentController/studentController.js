@@ -10,11 +10,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateStudentByName = exports.insertstudent = exports.deletestudent = exports.getStudentById = exports.getall = void 0;
+const sequelize = require('../database/databaseconfig');
 const Student = require('../models/student');
 const getall = function () {
     return __awaiter(this, void 0, void 0, function* () {
-        const students = yield Student.findAll();
-        return students;
+        try {
+            const results = yield sequelize.query('SELECT * FROM public.get_all_students()', { type: sequelize.QueryTypes.SELECT });
+            const students = results; // JSON.stringify(results);
+            console.log(students);
+            return students;
+        }
+        catch (error) {
+            console.error(error);
+        }
     });
 };
 exports.getall = getall;
