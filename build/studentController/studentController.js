@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateStudentByName = exports.insertstudent = exports.deletestudent = exports.getStudentById = exports.getall = void 0;
+exports.updateStudentById = exports.insertstudent = exports.deletestudent = exports.getStudentById = exports.getall = void 0;
 const sequelize = require('../database/databaseconfig');
 const Student = require('../models/student');
 const getall = function () {
@@ -47,33 +47,32 @@ exports.deletestudent = deletestudent;
 const insertstudent = function insertStudent(name, email, password) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const student = yield Student.create({
-                name: name,
-                email: email,
-                password: password
-            });
-            console.log(`Student has been added with id: ${student.id}`);
-            return 'added';
+            const query = 'SELECT insert_student(:name, :email, :password)';
+            const values = { name: name, email: email, password: password };
+            yield sequelize.query(query, { replacements: values });
+            return ({ status: "success", message: "student inserted" });
         }
         catch (error) {
-            return error;
+            return JSON.stringify({ status: "error", message: error.message });
         }
     });
 };
 exports.insertstudent = insertstudent;
-const updateStudentByName = (id, updates) => __awaiter(void 0, void 0, void 0, function* () {
+const updateStudentById = (id, updates) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const student = yield Student.update(updates, {
-            where: {
-                id: id
-            }
+        let update;
+        if (typeof updates === 'object')
+            update = JSON.stringify(updates);
+        const result = yield sequelize.query('SELECT update_student(:studentId, :updates)', {
+            replacements: { studentId: id, updates: update },
+            type: sequelize.QueryTypes.SELECT,
         });
-        console.log(`Updated student with name ${id}`);
-        console.log(student);
-        return student;
+        console.log(result);
+        return result;
     }
     catch (error) {
         console.error(error);
+        throw error;
     }
 });
-exports.updateStudentByName = updateStudentByName;
+exports.updateStudentById = updateStudentById;

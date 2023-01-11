@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { deletestudent, getStudentById ,getall, insertstudent, updateStudentByName} from "./studentController/studentController";
+import { deletestudent, getStudentById ,getall, insertstudent, updateStudentById} from "./studentController/studentController";
 
 
 const express =require('express');

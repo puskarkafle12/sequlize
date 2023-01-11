@@ -23,7 +23,7 @@ Router.get('/deletestudent/:id', (req, res) => __awaiter(void 0, void 0, void 0,
     const result = yield (0, studentController_1.deletestudent)(parseInt(req.params.id));
     res.json(result);
 }));
-Router.post('/insertstudent/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+Router.post('/insertstudent', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, email, password } = req.body;
     const result = yield (0, studentController_1.insertstudent)(name, email, password);
     res.json({
@@ -31,11 +31,18 @@ Router.post('/insertstudent/', (req, res) => __awaiter(void 0, void 0, void 0, f
     });
 }));
 Router.post('/updatestudent/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let result;
     const { id, update } = req.body;
     console.log(id);
-    const result = yield (0, studentController_1.updateStudentByName)(id, update);
-    res.json({
-        message: 'sucessfully added' + result
+    result = (0, studentController_1.updateStudentById)(id, update);
+    console.log('this  is the result:' + result);
+    return result // here is confusion why the result is printing only when return is used
+        .then(result => {
+        res.json(result);
+    })
+        .catch(err => {
+        result = err;
     });
+    res.json(result);
 }));
 module.exports = Router;
