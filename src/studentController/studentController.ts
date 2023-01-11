@@ -1,29 +1,30 @@
-import { Model } from "sequelize";
+import { Model, json } from "sequelize";
 
 const Student=require('../models/student')
 export const getall=async function  (){
  
     
     const students = await Student.findAll();
+    return students
     
-    students.forEach(student  => {
-      console.log(student.get());
-    });
+    
 }
+
 export const getStudentById=async function  (id:Number){
  
   const student = await Student.findByPk(id);
 
 
-    console.log(student.get());
+    return student.get()
 
 }
 export const deletestudent=async function (id:Number) {
-  await Student.destroy({
+  const result=await Student.destroy({
     where: {
       id: id
     }
   });
+  return result
 }
 export const insertstudent=async function insertStudent(name:String, email:String, password:String) {
   try {
@@ -33,8 +34,9 @@ export const insertstudent=async function insertStudent(name:String, email:Strin
       password: password
     });
     console.log(`Student has been added with id: ${student.id}`);
+    return 'added';
   } catch (error) {
-    console.error(error);
+    return error;
   }
 }
 export const updateStudentByName = async (name:String, updates:JSON) => {
@@ -45,6 +47,7 @@ export const updateStudentByName = async (name:String, updates:JSON) => {
       }
     });
     console.log(`Updated student with name ${name}`);
+    console.log(student)
     return student;
   } catch (error) {
     console.error(error);
