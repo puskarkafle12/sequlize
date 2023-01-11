@@ -53,14 +53,14 @@ const insertstudent = function insertStudent(name, email, password) {
     });
 };
 exports.insertstudent = insertstudent;
-const updateStudentByName = (name, updates) => __awaiter(void 0, void 0, void 0, function* () {
+const updateStudentByName = (id, updates) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const student = yield Student.update(updates, {
             where: {
-                name: name
+                id: id
             }
         });
-        console.log(`Updated student with name ${name}`);
+        console.log(`Updated student with name ${id}`);
         console.log(student);
         return student;
     }

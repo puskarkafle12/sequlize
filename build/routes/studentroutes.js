@@ -31,8 +31,9 @@ Router.post('/insertstudent/', (req, res) => __awaiter(void 0, void 0, void 0, f
     });
 }));
 Router.post('/updatestudent/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, update } = req.body;
-    const result = yield (0, studentController_1.updateStudentByName)(name, update);
+    const { id, update } = req.body;
+    console.log(id);
+    const result = yield (0, studentController_1.updateStudentByName)(id, update);
     res.json({
         message: 'sucessfully added' + result
     });

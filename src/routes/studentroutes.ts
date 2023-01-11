@@ -23,8 +23,9 @@ Router.post('/insertstudent/', async(req:Request,res:Response)=>{
    })
 })
 Router.post('/updatestudent/', async(req:Request,res:Response)=>{
-   const {name ,update}=req.body
-   const result = await updateStudentByName(name,update);
+   const {id ,update}=req.body
+   console.log(id)
+   const result = await updateStudentByName(id,update);
    res.json({
        message:'sucessfully added'+result
    })

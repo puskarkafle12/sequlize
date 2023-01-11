@@ -39,14 +39,14 @@ export const insertstudent=async function insertStudent(name:String, email:Strin
     return error;
   }
 }
-export const updateStudentByName = async (name:String, updates:JSON) => {
+export const updateStudentByName = async (id:Number, updates:JSON) => {
   try {
     const student = await Student.update(updates, {
       where: {
-        name: name
+        id: id
       }
     });
-    console.log(`Updated student with name ${name}`);
+    console.log(`Updated student with name ${id}`);
     console.log(student)
     return student;
   } catch (error) {
